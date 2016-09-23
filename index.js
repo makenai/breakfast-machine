@@ -7,7 +7,12 @@ var Speaker = require('speaker');
 
 var audioPath = path.join(__dirname, 'audio/Breakfast-Machine.mp3');
 
-fs.createReadStream(audioPath)
-  .pipe(new lame.Decoder())
-  .on('format', console.log)
-  .pipe(new Speaker());
+function playLoop() {
+  fs.createReadStream(audioPath)
+    .pipe(new lame.Decoder())
+    .on('format', console.log)
+    .pipe(new Speaker())
+    .on('finish', playLoop);
+}
+playLoop();
+
